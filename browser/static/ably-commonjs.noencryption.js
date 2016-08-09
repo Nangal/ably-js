@@ -10,17 +10,7 @@
  * Released under the Apache Licence v2.0
  */
 
-;(function() {
-	"use strict";
-	var Ably = window.Ably = this;
-
-  /*
-    Prevent libraries such as msgpack plugging into AMD or CommonJS
-    as the libraries loaded are expected in the `this` context.
-    `require` is only used within the Node.js library, the ably-js browser library
-    is built as a single Javascript file.
-  */
-  var define, exports, require;
+var Ably = {};
 
 /**
  * CryptoJS core components.
@@ -3382,7 +3372,7 @@ var ErrorInfo = (function() {
 })();
 
 var Message = (function() {
-	var msgpack = (typeof require !== "function") ? Ably.msgpack : require('msgpack-js');
+	var msgpack = (typeof define !== "function") ? Ably.msgpack : require('msgpack-js');
 
 	function Message() {
 		this.name = undefined;
@@ -3574,7 +3564,7 @@ var Message = (function() {
 })();
 
 var PresenceMessage = (function() {
-	var msgpack = (typeof require !== "function") ? Ably.msgpack : require('msgpack-js');
+	var msgpack = (typeof define !== "function") ? Ably.msgpack : require('msgpack-js');
 
 	function toActionValue(actionString) {
 		return Utils.arrIndexOf(PresenceMessage.Actions, actionString)
@@ -3695,7 +3685,7 @@ var PresenceMessage = (function() {
 })();
 
 var ProtocolMessage = (function() {
-	var msgpack = (typeof require !== "function") ? Ably.msgpack : require('msgpack-js');
+	var msgpack = (typeof define !== "function") ? Ably.msgpack : require('msgpack-js');
 
 	function ProtocolMessage() {
 		this.action = undefined;
@@ -6063,7 +6053,7 @@ var Presence = (function() {
 })();
 
 var Resource = (function() {
-	var msgpack = (typeof require !== "function") ? Ably.msgpack : require('msgpack-js');
+	var msgpack = (typeof define !== "function") ? Ably.msgpack : require('msgpack-js');
 
 	function Resource() {}
 
@@ -6323,7 +6313,7 @@ var PaginatedResource = (function() {
 var Auth = (function() {
 	var isBrowser = (typeof(window) == 'object');
 	var crypto = isBrowser ? null : require('crypto');
-	var msgpack = (typeof require !== "function") ? Ably.msgpack : require('msgpack-js');
+	var msgpack = (typeof define !== "function") ? Ably.msgpack : require('msgpack-js');
 	function noop() {}
 	function random() { return ('000000' + Math.floor(Math.random() * 1E16)).slice(-16); }
 
@@ -9017,18 +9007,17 @@ var XHRPollingTransport = (function() {
 	return XHRPollingTransport;
 })();
 
-if(typeof Realtime !== 'undefined') {
-	Ably.Rest = Rest;
-	Ably.Realtime = Realtime;
-	Realtime.ConnectionManager = ConnectionManager;
-	Realtime.BufferUtils = Rest.BufferUtils = BufferUtils;
-	if(typeof(Crypto) !== 'undefined') Realtime.Crypto = Rest.Crypto = Crypto;
-	Realtime.Defaults = Rest.Defaults = Defaults;
-	Realtime.Http = Rest.Http = Http;
-	Realtime.Utils = Rest.Utils = Utils;
-	Realtime.Http = Rest.Http = Http;
-	Realtime.Message = Rest.Message = Message;
-	Realtime.PresenceMessage = Rest.PresenceMessage = PresenceMessage;
-	Realtime.ProtocolMessage = Rest.ProtocolMessage = ProtocolMessage;
-}
-}).call({});
+Ably.Rest = Rest;
+Ably.Realtime = Realtime;
+Realtime.ConnectionManager = ConnectionManager;
+Realtime.BufferUtils = Rest.BufferUtils = BufferUtils;
+if(typeof(Crypto) !== 'undefined') Realtime.Crypto = Rest.Crypto = Crypto;
+Realtime.Defaults = Rest.Defaults = Defaults;
+Realtime.Http = Rest.Http = Http;
+Realtime.Utils = Rest.Utils = Utils;
+Realtime.Http = Rest.Http = Http;
+Realtime.Message = Rest.Message = Message;
+Realtime.PresenceMessage = Rest.PresenceMessage = PresenceMessage;
+Realtime.ProtocolMessage = Rest.ProtocolMessage = ProtocolMessage;
+
+module.exports = Ably;
